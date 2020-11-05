@@ -10,7 +10,7 @@ const queue = new Map();
 const token = process.env.TOKEN;
 console.log("TOKEN" + token);
 const client = new Discord.Client();
-client.login(token);
+client.login("NzczOTEyNzM5Njg0ODEwNzcy.X6QIZw.GREmUlbBt5JFAJa63qp0LkATzBQ");
 
 
 client.once('ready', () => {
@@ -23,6 +23,25 @@ client.once('disconnect', () => {
     console.log('Disconnect!');
 });
 
+
+client.on('disconnect', async disconnect => {
+    console.log(disconnect)
+})
+
+client.on('guildMemberAvailable', async member => {
+    console.log(member)
+})
+client.on('messageUpdate', async message => {
+    console.log(message)
+})
+
+client.on('userUpdate', async user => {
+    console.log(user)
+})
+
+client.on('presenceUpdate', async presence => {
+    console.log(presence)
+})
 
 client.on('message', async message => {
     if (message.author.bot) return;
