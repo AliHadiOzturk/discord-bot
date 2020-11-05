@@ -10,7 +10,7 @@ const queue = new Map();
 const token = process.env.TOKEN;
 console.log("TOKEN" + token);
 const client = new Discord.Client();
-client.login("NzczOTEyNzM5Njg0ODEwNzcy.X6QIZw.GREmUlbBt5JFAJa63qp0LkATzBQ");
+client.login(token);
 
 
 client.once('ready', () => {
