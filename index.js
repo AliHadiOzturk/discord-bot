@@ -8,7 +8,7 @@ const yts = require('yt-search')
 const queue = new Map();
 
 const token = process.env.TOKEN;
-console.log(token);
+console.log("TOKEN" + token);
 const client = new Discord.Client();
 client.login(token);
 
