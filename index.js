@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const { prefix } = require('./config.json');
 const ytdl = require('ytdl-core');
-const yts = require('yt-search')
+const yts = require('yt-search');
 
 
 const queue = new Map();
@@ -23,24 +23,90 @@ client.once('disconnect', () => {
     console.log('Disconnect!');
 });
 
-
-client.on('disconnect', async disconnect => {
-    console.log(disconnect)
-})
-
 client.on('guildMemberAvailable', async member => {
     console.log(member)
 })
-client.on('messageUpdate', async message => {
-    console.log(message)
+client.on('messageUpdate', async (message, oldmessage) => {
+    console.log(message, oldmessage)
 })
 
 client.on('userUpdate', async user => {
     console.log(user)
 })
 
-client.on('presenceUpdate', async presence => {
-    console.log(presence)
+client.on('presenceUpdate', async (oldPresence, newPresence) => {
+    console.log(oldPresence, newPresence)
+})
+
+client.on('userUpdate', async (oldUser, newUser) => {
+    console.log(oldUser, newUser)
+})
+client.on('voiceStateUpdate', async (oldState, newState) => {
+    if (oldState.member.user.bot) return;
+
+    if (oldState.channel == newState.channel) return;
+
+
+    var logChannel;
+
+    if (oldState.channel)
+        logChannel = oldState.guild.channels.cache.find(x => x.name == "log");
+    else if (newState.channel)
+        logChannel = newState.guild.channels.cache.find(x => x.name == "log");
+
+    if (!newState.channel) {
+        //logChannel = oldState.guild.channels.cache.find(x => x.name == "log");
+        const embed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Voice Leave')
+            .addFields(
+                { name: 'User', value: `<@${oldState.member.user.id}>`, inline: true },
+                { name: 'Leave From', value: oldState.channel.name, inline: true },
+            )
+            // .addField('Inline field title', 'Some value here', true)
+            // .setImage('https://i.imgur.com/wSTFkRM.png')
+            .setTimestamp()
+        // .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
+        if (logChannel instanceof Discord.TextChannel) {
+            logChannel.send(embed)
+        }
+    }
+    else if (oldState.channel) {
+        //logChannel = newState.guild.channels.cache.find(x => x.name == "log");
+        const embed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Voice Channel Switch')
+            .addFields(
+                { name: 'User', value: `<@${newState.member.user.id}>`, inline: true },
+                { name: 'Old Channel', value: oldState.channel.name, inline: true },
+                { name: 'New Channel', value: newState.channel.name, inline: true },
+            )
+            // .addField('Inline field title', 'Some value here', true)
+            // .setImage('https://i.imgur.com/wSTFkRM.png')
+            .setTimestamp()
+        // .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
+        if (logChannel instanceof Discord.TextChannel) {
+            logChannel.send(embed)
+        }
+    }
+    else {
+        //logChannel = newState.guild.channels.cache.find(x => x.name == "log");
+        const embed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Voice Join')
+            .addFields(
+                { name: 'User', value: `<@${newState.member.user.id}>`, inline: true },
+                { name: 'Joined', value: newState.channel.name, inline: true },
+            )
+            // .addField('Inline field title', 'Some value here', true)
+            // .setImage('https://i.imgur.com/wSTFkRM.png')
+            .setTimestamp()
+        // .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
+        if (logChannel instanceof Discord.TextChannel) {
+            logChannel.send(embed)
+        }
+    }
+
 })
 
 client.on('message', async message => {
