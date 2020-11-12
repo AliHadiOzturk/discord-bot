@@ -3,7 +3,23 @@ const Discord = require('discord.js');
 const { prefix } = require('./config.json');
 const ytdl = require('ytdl-core');
 const yts = require('yt-search');
+const http = require('http');
 
+
+const server = http.createServer((req, res) => {
+    res.statusCode = 200;
+    res.end("Discord is running!")
+});
+console.log("PORT : " + process.env.PORT);
+
+server.listen(process.env.PORT | 80);
+server.on('listening', () => {
+    console.log(`Server is running on ${process.env.PORT | 80} port!`);
+})
+
+// server.listen(8080, "127.0.0.1", 0, () => {
+//     console.log("Server is running on 8080 port!");
+// })
 
 const queue = new Map();
 
@@ -27,19 +43,19 @@ client.on('guildMemberAvailable', async member => {
     console.log(member)
 })
 client.on('messageUpdate', async (message, oldmessage) => {
-    console.log(message, oldmessage)
+    console.log("Message updated")
+    //console.log(message, oldmessage)
 })
 
-client.on('userUpdate', async user => {
-    console.log(user)
-})
 
 client.on('presenceUpdate', async (oldPresence, newPresence) => {
-    console.log(oldPresence, newPresence)
+    //console.log(oldPresence, newPresence)
+    console.log("Presence Updated")
 })
 
 client.on('userUpdate', async (oldUser, newUser) => {
-    console.log(oldUser, newUser)
+    //console.log(oldUser, newUser)
+    console.log("User updated")
 })
 client.on('voiceStateUpdate', async (oldState, newState) => {
     if (oldState.member.user.bot) return;
