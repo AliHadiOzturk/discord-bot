@@ -10,11 +10,13 @@ const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.end("Discord is running!")
 });
-console.log("PORT : " + process.env.PORT);
 
-server.listen(process.env.PORT | 80);
+const port = process.env.PORT || 3000;
+console.log("PORT : " + port);
+
+server.listen(port);
 server.on('listening', () => {
-    console.log(`Server is running on ${process.env.PORT | 80} port!`);
+    console.log(`Server is running on ${port} port!`);
 })
 
 // server.listen(8080, "127.0.0.1", 0, () => {
